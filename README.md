@@ -4,7 +4,7 @@ LocalAI is a powerful browser extension that brings state-of-the-art Large Langu
 
 Zero API keys. Zero server tracking. Complete privacy.
 
-![LocalAI Banner](./assets/banner.png)
+![LocalAI Banner](./assets/banner-v2.png)
 
 ## ✨ Features
 
