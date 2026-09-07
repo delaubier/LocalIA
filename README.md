@@ -1,53 +1,94 @@
-# Qwen Web Extension 🚀
+# LocalAI - Private & Local LLM Browser Extension
 
-Une extension Chrome puissante permettant de télécharger et d'exécuter des modèles de langage locaux (LLM) comme **Qwen 3.5 4B** directement dans votre navigateur, avec une interface élégante inspirée de ChatGPT.
+LocalAI is a powerful browser extension that brings state-of-the-art Large Language Models (LLMs) directly into your browser. Built entirely on WebGPU and [Web-LLM](https://webllm.mlc.ai/), it allows you to run models like Llama 3.2, Qwen 2.5, and Phi-3.5 Vision **100% locally and offline**.
 
-## 🌟 Fonctionnalités Principales
+Zero API keys. Zero server tracking. Complete privacy.
 
-*   **100% Local & Privé** : Le modèle tourne entièrement dans votre navigateur grâce à WebGPU et WebLLM. Aucune donnée ne quitte votre ordinateur.
-*   **Interface Premium (Type ChatGPT)** : Une interface de discussion fluide, moderne et esthétique (animations subtiles, mode sombre, syntax highlighting).
-*   **Intégration Transparente** : Accessible via un panneau latéral (Side Panel) dans Chrome pour vous assister pendant votre navigation sur n'importe quel site web.
-*   **Gestion des Modèles** : Interface pour télécharger, mettre en cache et gérer différents modèles (Qwen 3.5, Llama 3, Phi-3, etc.) directement dans le navigateur.
+![LocalAI Banner](./assets/banner.png)
 
-## 🏗️ Architecture de l'Extension
+## ✨ Features
 
-L'extension est divisée en plusieurs parties clés :
+- **100% Local Execution**: All AI processing happens on your device using WebGPU. No data ever leaves your browser.
+- **Multimodal Support (Vision)**: Upload images and analyze them locally using the Phi-3.5 Vision model.
+- **Document Analysis**: Attach `.txt`, `.md`, `.json`, `.csv`, and even **`.pdf`** files. The extension automatically extracts the text and feeds it to the AI as context.
+- **Hot-Switching Models**: Seamlessly switch between different models during the same conversation without losing context.
+- **Model Management**: Download, cache, and delete models directly from the UI. It provides real-time estimates of VRAM usage and your available disk space.
+- **Rich Text & Code Highlighting**: Beautifully renders Markdown, tables, and syntax-highlighted code blocks.
+- **"Think" Process Visibility**: Supports reasoning models (like DeepSeek) by capturing and displaying the `<think>` blocks in a collapsible UI.
 
-1.  **Side Panel (L'Interface Utilisateur)**
-    *   **Technologie** : React.js (ou Vanilla JS) + Tailwind CSS (ou CSS moderne avec Glassmorphism).
-    *   **Rôle** : Affiche le chat, gère les entrées utilisateur, affiche les réponses en streaming.
-2.  **Service Worker (Background Script)**
-    *   **Technologie** : API Chrome Extension (Manifest V3).
-    *   **Rôle** : Gère le cycle de vie de l'extension, intercepte les clics sur l'icône pour ouvrir le panneau.
-3.  **Moteur WebLLM (Offscreen Document / Web Worker)**
-    *   **Technologie** : [WebLLM](https://webllm.mlc.ai/) (basé sur Apache TVM) + WebGPU.
-    *   **Rôle** : Télécharge les poids du modèle Qwen 3.5 4B, les stocke dans le cache du navigateur (Cache API / IndexedDB) et exécute l'inférence localement pour générer les réponses.
+## 📦 Supported Models
 
-## 🛠️ Stack Technique Recommandée
+LocalAI supports a curated list of models optimized for WebGPU, categorized by their hardware requirements:
 
-*   **Modèle** : Qwen-1.5-4B-Chat-q4f16_1 (via WebLLM MLC)
-*   **Moteur d'inférence** : `@mlc-ai/web-llm` (Nécessite un navigateur compatible WebGPU)
-*   **UI/UX** : React, Framer Motion (pour les animations), CSS personnalisé pour un effet "Premium".
-*   **Bundler** : Vite.js pour compiler l'extension.
+### Small Models (< 2GB VRAM)
+Perfect for laptops and integrated graphics.
+- **Llama 3.2 (1B)** - Fast and capable.
+- **TinyLlama (1.1B)** - Ultra-lightweight.
+- **Qwen 2.5 (1.5B)** - Excellent reasoning for its size.
+- **Gemma 2 (2B)** - Google's open weights model.
 
-## 🚀 Guide de Démarrage (Roadmap)
+### Medium Models (2GB to 5GB VRAM)
+Great balance of performance and intelligence.
+- **Llama 3.2 (3B)**
+- **Qwen 2.5 (3B)**
+- **Phi-3.5 Mini (3.8B)**
+- **Phi-3.5 Vision** (Image Support 🖼️)
+- **Mistral v0.3 (7B)**
 
-### 1. Initialisation
-*   Créer le `manifest.json` (Manifest V3) avec les permissions nécessaires (`sidePanel`, `storage`, `unlimitedStorage` pour les poids du modèle).
-*   Configurer Vite pour build l'extension.
+### Large Models (> 5GB VRAM)
+For high-end GPUs.
+- **Llama 3.1 (8B)**
+- **Qwen 2.5 (7B)**
+- **DeepSeek R1 Distill (7B)**
+- **Gemma 2 (9B)**
 
-### 2. Implémentation du WebLLM
-*   Intégrer la bibliothèque `@mlc-ai/web-llm` dans un Web Worker.
-*   Créer un gestionnaire de téléchargement avec une barre de progression pour le modèle (les modèles font plusieurs Go).
+## 🚀 Getting Started
 
-### 3. Développement de l'Interface (UI)
-*   Créer une interface de chat responsive.
-*   Implémenter le rendu Markdown pour les réponses de l'IA (avec coloration syntaxique pour le code).
-*   Ajouter des indicateurs de génération (typing effect).
+### Prerequisites
+- A modern browser with **WebGPU support** enabled (Google Chrome 113+, Microsoft Edge 113+).
+- A dedicated or integrated GPU.
 
-### 4. Intégration
-*   Connecter l'interface React au Web Worker via l'API de messagerie de Chrome (`chrome.runtime.sendMessage`).
+### Installation for Development
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/local-ai.git
+   cd local-ai
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Build the extension:
+   ```bash
+   npm run build
+   ```
+4. Load the extension in your browser:
+   - Go to `chrome://extensions/`
+   - Enable **Developer mode** (top right corner).
+   - Click **Load unpacked** and select the `dist` folder generated by the build process.
 
-## 💡 Notes sur WebGPU
+## 🛠️ Built With
 
-L'exécution de modèles comme Qwen 3.5 4B requiert **WebGPU**. L'utilisateur doit s'assurer d'utiliser une version récente de Google Chrome sur une machine disposant d'un GPU dédié ou d'un bon GPU intégré (Apple Silicon M1/M2/M3 ou équivalent PC).
+- [React 19](https://react.dev/) - Frontend Framework
+- [Vite](https://vitejs.dev/) - Build Tool
+- [Tailwind CSS v4](https://tailwindcss.com/) - Styling
+- [Web-LLM](https://webllm.mlc.ai/) - Local LLM Engine (Apache TVM / MLC)
+- [PDF.js](https://mozilla.github.io/pdf.js/) - Client-side PDF text extraction
+- [Framer Motion](https://www.framer.com/motion/) - UI Animations
+
+## 🔒 Privacy
+
+LocalAI respects your privacy by design. Because the models run entirely via WebGPU within your browser's sandbox:
+- **No data collection**
+- **No telemetry**
+- **No remote API calls to LLM providers**
+
+Your prompts, attached files, and images stay on your machine.
+
+## 📜 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+*Note: The first time you use a new model, it will download the model weights to your browser's cache. This might take a few minutes depending on your internet connection, but subsequent loads will be nearly instant.*
